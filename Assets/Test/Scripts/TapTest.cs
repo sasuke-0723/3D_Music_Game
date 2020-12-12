@@ -4,25 +4,58 @@ using UnityEngine;
 
 public class TapTest : MonoBehaviour
 {
+    private Vector3 touchStartPos;
+    private Vector3 touchEndPos;
+
+    float flickTimeLimit = 0.5f;
+    private float flickDistance;
+    [SerializeField] private float flickRangeDistance = 50.0f;
+
+    private float _fingerId = 0;
+
     private void Update()
     {
-        if (Input.touchCount > 0)
+        TouchTest();
+    }
+
+    private void TouchTest()
+    {
+        foreach (Touch touch in Input.touches)
         {
-            Touch touch = Input.GetTouch(0);
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    Debug.Log("押した瞬間");
+                    touchStartPos = touch.position;
                     break;
-                case TouchPhase.Ended:
-                    Debug.Log("離した瞬間");
+                case TouchPhase.Stationary:
                     break;
                 case TouchPhase.Moved:
-                    Debug.Log("長押し");
+                    break;
+                case TouchPhase.Ended:
+                    touchEndPos = touch.position;
+                    flickDistance = Vector2.Distance(touchStartPos, touchEndPos);
+                    Debug.Log(flickDistance);
+                    break;
+                case TouchPhase.Canceled:
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    /// <summary> Flick判定の時間</summary>
+    private bool FlickJudgment()
+    {
+        float flickTimer = 0;
+        bool isFlick = false;
+
+        flickTimer += Time.deltaTime;
+        if (flickTimer < flickTimeLimit)
+        {
+            isFlick = true;
+        }
+
+        return isFlick;
     }
 }

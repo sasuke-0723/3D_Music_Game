@@ -4,29 +4,48 @@ using UnityEngine;
 
 public class TapManager : MonoBehaviour
 {
-    private Vector3 touchStartPos;
-    private Vector3 touchEndPos;
+    private Vector2 touchStartPos;
+    private Vector2 touchEndPos;
+    private float flickTimer = 0.0f; // Flick判定タイマー
 
-    private void Update()
+    void Update()
     {
         foreach (Touch touch in Input.touches)
         {
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    Debug.Log("Touch: " + touch.fingerId);
+                    touchStartPos = touch.position;
+                    flickTimer += Time.deltaTime;
                     break;
                 case TouchPhase.Stationary:
-                    Debug.Log("Hold:" + touch.fingerId);
                     break;
                 case TouchPhase.Moved:
-                    Debug.Log("Slide:" + touch.fingerId);
                     break;
                 case TouchPhase.Ended:
-                    Debug.Log("HoldEnd:" + touch.fingerId);
+                    touchEndPos = touch.position;
+                    //float flickDirection = Vector2.Distance(touchStartPos, touchEndPos);
+                    Debug.Log(flickTimer);
                     break;
                 case TouchPhase.Canceled:
-                    Debug.Log("Cancel:" + touch.fingerId);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void Flick()
+    {
+        foreach (Touch touch in Input.touches)
+        {
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    touchStartPos = touch.position;
+                    break;
+                case TouchPhase.Ended:
+                    touchEndPos = touch.position;
                     break;
                 default:
                     break;
