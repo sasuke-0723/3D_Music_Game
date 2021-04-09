@@ -10,18 +10,7 @@ public class SaveMusicData : MonoBehaviour
     {
         MusicData music = new MusicData()
         {
-            songTitle = "OVERFLOW",
-            bpm = 120,
-            notesData = new List<NotesData>()
-            {
-                new NotesData()
-                {
-                    noteType = "Tap",
-                    laneValue = 1,
-                    timing = 1.5f,
-                    judgment = "Perfect",
-                }
-            }
+            name = "OVERFLOW",
         };
         MusicDataWriter(music);
     }
