@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class TapTest : MonoBehaviour
 {
-    private Vector3 touchStartPos;
-    private Vector3 touchEndPos;
+    Vector3 touchStartPos;
+    Vector3 touchEndPos;
 
     float flickTimeLimit = 0.5f;
-    private float flickDistance;
-    [SerializeField] private float flickRangeDistance = 50.0f;
+    float flickDistance;
+    [SerializeField] float flickRangeDistance = 50.0f;
 
-    private float _fingerId = 0;
+    float _fingerId = 0;
 
-    private void Update()
+    void Update()
     {
         TouchTest();
     }
 
-    private void TouchTest()
+    void TouchTest()
     {
         foreach (Touch touch in Input.touches)
         {
@@ -45,7 +45,7 @@ public class TapTest : MonoBehaviour
     }
 
     /// <summary> Flick判定の時間</summary>
-    private bool FlickJudgment()
+    bool FlickJudgment()
     {
         float flickTimer = 0;
         bool isFlick = false;

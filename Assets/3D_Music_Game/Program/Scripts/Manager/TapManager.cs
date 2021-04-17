@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TapManager : MonoBehaviour
 {
-    private Vector2 touchStartPos;
-    private Vector2 touchEndPos;
-    private float flickTimer = 0.0f; // Flick判定タイマー
+    Vector2 touchStartPos;
+    Vector2 touchEndPos;
+    float flickTimer = 0.0f; // Flick判定タイマー
 
     void Update()
     {
@@ -35,7 +35,7 @@ public class TapManager : MonoBehaviour
         }
     }
 
-    private void Flick()
+    void Flick()
     {
         foreach (Touch touch in Input.touches)
         {

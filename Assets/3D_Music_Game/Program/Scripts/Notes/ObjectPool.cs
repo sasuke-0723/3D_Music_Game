@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    private List<GameObject> poolObjList;
-    private GameObject poolObj;
+    List<GameObject> poolObjList;
+    GameObject poolObj;
 
     // オブジェクトプールを作成
     public void CreatePool(GameObject obj, int maxCount)
@@ -39,7 +39,7 @@ public class ObjectPool : MonoBehaviour
         return newObj;
     }
 
-    private GameObject CreateNewObject()
+    GameObject CreateNewObject()
     {
         var newObj = Instantiate(poolObj);
         newObj.name = poolObj.name + (poolObjList.Count + 1);
