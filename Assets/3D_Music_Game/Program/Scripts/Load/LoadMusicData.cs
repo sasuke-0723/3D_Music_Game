@@ -3,7 +3,7 @@ using System.IO;
 
 public class LoadMusicData : MonoBehaviour
 {
-    private const string FilePath = "Resources/NotesData/TestFile";
+    const string FilePath = "Resources/NotesData/TestFile";
 
     public MusicData MusicDataReader()
     {

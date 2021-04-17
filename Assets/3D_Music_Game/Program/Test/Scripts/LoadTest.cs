@@ -7,9 +7,8 @@ using System.Text;
 
 public class LoadTest : MonoBehaviour
 {
-    private string filePath = "NotesData/OVERFLOW";
+    string filePath = "NotesData/OVERFLOW";
     public string FilePath { get; set; }
-    private string path = "";
 
     //private void Awake()
     //{

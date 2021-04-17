@@ -4,9 +4,9 @@ using System.IO;
 
 public class SaveMusicData : MonoBehaviour
 {
-    private const string FilePath = "Resources/NotesData/TestFile";
+    const string FilePath = "Resources/NotesData/TestFile";
 
-    private void Awake()
+    void Awake()
     {
         MusicData music = new MusicData()
         {
