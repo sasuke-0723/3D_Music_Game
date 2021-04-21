@@ -1,6 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-class Sample {
+public class Test : MonoBehaviour
+{
+    private void Start()
+    {
+        Debug.Log(Mathf.Epsilon);
+    }
 }
