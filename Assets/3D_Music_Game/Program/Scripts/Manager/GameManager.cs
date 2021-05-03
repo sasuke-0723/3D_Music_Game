@@ -8,7 +8,9 @@ using UniRx.Triggers;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    private void Start()
+    [SerializeField] Transform judgmentLine;
+
+    protected override void Awake()
     {
         base.Awake();
     }

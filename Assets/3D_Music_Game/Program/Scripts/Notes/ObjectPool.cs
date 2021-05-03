@@ -25,7 +25,7 @@ public abstract class ObjectPool : MonoBehaviour
         poolObjList = new List<GameObject>();
 
         var newObj = CreateNewObject(pos, angle);
-        newObj.gameObject.SetActive(false);
+        //newObj.gameObject.SetActive(false);
         poolObjList.Add(newObj);
     }
 

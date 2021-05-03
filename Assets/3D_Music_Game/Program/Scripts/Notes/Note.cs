@@ -6,24 +6,20 @@ using UnityEngine;
 public class Note : MonoBehaviour
 {
     Rigidbody rigid;
-    float notesSpeed = 3.0f;
-    float notesJudgeTime = 3.0f;
-    float musicCurrentTime = 0.0f;
-    float laneLength = 5.4f;
+    [SerializeField] float noteSpeed = 4.0f;
+    public float NoteSpeed { get { return noteSpeed; } }
 
-    void Awake()
+    void OnEnable()
     {
+        noteSpeed = 4f * 158f / 60f;
         rigid = GetComponent<Rigidbody>();
         rigid.velocity = Vector3.zero;
     }
 
-    void Update()
-    {
-
-    }
-
     void FixedUpdate()
     {
-
+        Vector3 angle = new Vector3(-30, 0, 0);
+        Vector3 direction = Quaternion.Euler(angle) * Vector3.back;
+        rigid.velocity = direction * noteSpeed;
     }
 }

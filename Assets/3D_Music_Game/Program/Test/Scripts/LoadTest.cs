@@ -9,7 +9,7 @@ using NoteEditor.DTO;
 public class LoadTest : MonoBehaviour
 {
     /// <summary> 譜面が保存されている場所 </summary>
-    string filePath = "NotesData/OVERFLOW";
+    string filePath = "/Users/sasuke/Documents/FonePaw/Notes/シャイニングスター.json";
     public string FilePath { get { return filePath; } }
     /// <summary> 楽曲名 </summary>
     public string Name { get; private set; }
@@ -33,7 +33,7 @@ public class LoadTest : MonoBehaviour
 
     private void Start()
     {
-
+        LoadNotesData();
     }
 
     /// <summary>
@@ -41,7 +41,19 @@ public class LoadTest : MonoBehaviour
     /// </summary>
     public void LoadNotesData()
     {
-        string input = Resources.Load<TextAsset>(filePath).ToString();
-        MusicDTO.EditData notes = JsonUtility.FromJson<MusicDTO.EditData>(input);
+        FileInfo file = new FileInfo(filePath);
+        try
+        {
+            using (StreamReader sr = new StreamReader(file.OpenRead(), Encoding.UTF8))
+            {
+                sr.ReadToEnd();
+                MusicDTO.EditData music = JsonUtility.FromJson<MusicDTO.EditData>(sr.ToString());
+                Notes = music.notes;
+            }
+        }
+        catch (FileNotFoundException)
+        {
+            Debug.LogError("ファイルが見つかりませんでした");
+        }
     }
 }
