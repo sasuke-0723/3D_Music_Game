@@ -2,47 +2,81 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+/// <summary>
+/// ObjectPool
+/// </summary>
+public abstract class ObjectPool : MonoBehaviour
 {
-    List<GameObject> poolObjList;
+    /// <summary> PoolするObject </summary>
     GameObject poolObj;
+    /// <summary> PoolしたObjectを格納するList </summary>
+    List<GameObject> poolObjList;
 
-    // オブジェクトプールを作成
-    public void CreatePool(GameObject obj, int maxCount)
+    /// <summary>
+    /// オブジェクトプールを作成
+    /// </summary>
+    /// <param name="obj"> Instance化するObject </param>
+    /// <param name="pos"> Instance化する位置 </param>
+    /// <param name="angle"> Instance化する角度 </param>
+    /// <param name="maxCount"> Instance化するObjectの数 </param>
+    protected void CreatePool(GameObject obj, Vector3 pos, Quaternion angle)
     {
         poolObj = obj;
         poolObjList = new List<GameObject>();
-        for (int i = 0; i < maxCount; i++)
-        {
-            var newObj = CreateNewObject();
-            newObj.SetActive(false);
-            poolObjList.Add(newObj);
-        }
+
+        var newObj = CreateNewObject(pos, angle);
+        //newObj.gameObject.SetActive(false);
+        poolObjList.Add(newObj);
     }
 
-    public GameObject GetObject()
+    /// <summary>
+    /// 未使用のObjectを探す
+    /// </summary>
+    /// <param name="pos"> Instance化する位置 </param>
+    /// <param name="angle"> Instance化する角度 </param>
+    /// <returns></returns>
+    protected GameObject GetUnusedObject(Vector3 pos, Quaternion angle)
     {
         // 使用中でないものを探す
         foreach (var obj in poolObjList)
         {
-            if (obj.activeSelf == false)
+            if (obj.gameObject.activeSelf == false)
             {
-                obj.SetActive(true);
+                obj.gameObject.SetActive(true);
                 return obj;
             }
         }
 
         // 全て使用中だったら新しく作って返す
-        var newObj = CreateNewObject();
-        newObj.SetActive(true);
+        var newObj = CreateNewObject(pos, angle);
+        newObj.gameObject.SetActive(true);
         poolObjList.Add(newObj);
         return newObj;
     }
 
-    GameObject CreateNewObject()
+    /// <summary>
+    /// Objectが足らなかった場合、新しくInstance化する
+    /// </summary>
+    /// <param name="pos"> 位置 </param>
+    /// <param name="angle"> 角度 </param>
+    /// <returns> Instance化したObject </returns>
+    GameObject CreateNewObject(Vector3 pos, Quaternion angle)
     {
-        var newObj = Instantiate(poolObj);
+        var newObj = Instantiate(poolObj, pos, angle);
         newObj.name = poolObj.name + (poolObjList.Count + 1);
         return newObj;
+    }
+
+    /// <summary>
+    /// PoolしたObjectを全て削除する
+    /// </summary>
+    protected void DeleteAllPoolObject()
+    {
+        foreach (var poolObj in poolObjList)
+        {
+            Destroy(poolObj);
+        }
+
+        poolObjList.Clear();
     }
 }
