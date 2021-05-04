@@ -11,7 +11,7 @@ public class NotesCreater : ObjectPool
     /// <summary> TapNotes </summary>
     [SerializeField] GameObject tapNotes;
     /// <summary> LongNotes </summary>
-    [SerializeField] GameObject longNotes;
+    [SerializeField] GameObject holdNote;
     /// <summary> 最初にInstance化するObjectの数 </summary>
     [SerializeField] int initNotesCount;
     /// <summary> 追加でInstance化するObjectの数 </summary>
@@ -52,7 +52,14 @@ public class NotesCreater : ObjectPool
             Vector3 notePos = new Vector3(-3.8f + music.notes[i].block * 1.9f,
                  music.notes[i].num * beatPerSecond * note.NoteSpeed / Mathf.Sqrt(3.0f),
                  music.notes[i].num * beatPerSecond * note.NoteSpeed);
-            CreatePool(tapNotes, notePos, angle);
+            if (music.notes[i].type == 1)
+            {
+                CreatePool(tapNotes, notePos, angle);
+            }
+            else
+            {
+                CreatePool(holdNote, notePos, angle);
+            }
         }
         clip.Music.Play();
     }

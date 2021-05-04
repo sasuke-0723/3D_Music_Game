@@ -48,7 +48,6 @@ public class LoadTest : MonoBehaviour
             {
                 sr.ReadToEnd();
                 MusicDTO.EditData music = JsonUtility.FromJson<MusicDTO.EditData>(sr.ToString());
-                Notes = music.notes;
             }
         }
         catch (FileNotFoundException)

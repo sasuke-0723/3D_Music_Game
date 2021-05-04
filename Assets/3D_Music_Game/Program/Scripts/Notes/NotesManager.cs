@@ -7,9 +7,4 @@ public class NotesManager : MonoBehaviour
     [SerializeField] List<GameObject> tapNote;
     List<GameObject> tapNotesCount;
     float notesJudgeTime = 3.0f;
-
-    void Awake()
-    {
-
-    }
 }
