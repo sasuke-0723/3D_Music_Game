@@ -30,7 +30,7 @@ namespace NoteEditor.DTO
             /// (LPB値が大きいほどスクロール速度が上がる)
             /// </summary>
             public int LPB;
-            /// <summary> 何番目のBeartsか </summary>
+            /// <summary> 拍子番号 </summary>
             public int num;
             /// <summary> レーンの番号 </summary>
             public int block;

@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: c7ff5873b272b4acaa7d0b9c84ff6b3f,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -552,9 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e4407f0f1ea49c0be9e7b6315e039f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapNotes: {fileID: 3607075252984914085, guid: a368c32c9673d4f88a87b3e462205c04,
-    type: 3}
+  tapNote: {fileID: 3607075252984914085, guid: a368c32c9673d4f88a87b3e462205c04, type: 3}
   holdNote: {fileID: 2568315929289390537, guid: 4eb5b7e0794dd41b2bf2e954e2deb9ed,
+    type: 3}
+  flickNote: {fileID: 5720967287668527145, guid: c138708e1834b479582d357725bab335,
     type: 3}
   initNotesCount: 0
   createNotesCount: 0
@@ -934,7 +936,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1608752022
 RectTransform:
   m_ObjectHideFlags: 0

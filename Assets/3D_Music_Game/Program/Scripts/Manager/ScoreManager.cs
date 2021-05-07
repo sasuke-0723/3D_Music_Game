@@ -7,22 +7,37 @@ using DG.Tweening;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static event Action AtTheTimeOfJudgment;
+    /// <summary> スコアを表示するテキスト </summary>
     Text scoreText;
+    /// <summary> 総スコア </summary>
     int score = 0;
-    const int MAX_SCORE = 1000000;
     Tween tween;
+    //int beforeScore = 0;
 
     void Awake()
     {
         scoreText = GetComponent<Text>();
     }
 
+    /// <summary>
+    /// 加算するスコアを受け取ってTextにアニメーションで反映させる
+    /// </summary>
+    /// <param name="scoreToAdd">加算されるスコア </param>
     public void UpdateScore(int scoreToAdd)
     {
+        var currentScore = score;
+        var finalScore = score + scoreToAdd;
+        score = currentScore;
+
         DOTween.Kill(tween);
-        tween = DOTween.To(() => score, value => score = value, score + scoreToAdd, 0.5f)
-            .OnUpdate(() => scoreText.text = string.Format($"Score: {score:D7}"));
-        //AtTheTimeOfJudgment?.Invoke();
+        tween = DOTween.To(() => currentScore, value => currentScore = value, finalScore, 1.0f)
+            .OnUpdate(() => scoreText.text = string.Format($"Score: {currentScore:D7}"));
+
+        //tween.Kill();
+        //beforeScore = beforeScore + scoreToAdd;
+        //sequence.Append(tween = DOTween.To(() => score, value => score = value, score + scoreToAdd, 3.0f)
+        //    .OnComplete(() => { score = beforeScore; })
+        //    .OnKill(() => { score = beforeScore; })
+        //    .OnUpdate(() => scoreText.text = string.Format($"Score: {score:D7}")));
     }
 }
