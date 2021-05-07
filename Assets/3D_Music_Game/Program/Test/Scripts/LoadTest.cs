@@ -24,7 +24,7 @@ public class LoadTest : MonoBehaviour
     public List<MusicDTO.Note> Notes1 { get; private set; }
     /// <summary> 1拍の内にプレイカーソルが何ライン進むか </summary>
     public List<int> LPB { get; private set; } = new List<int>();
-    /// <summary> TODO 今のところ何に使うのか分かっていない </summary>
+    /// <summary> 拍子番号 </summary>
     public List<int> Num { get; private set; } = new List<int>();
     /// <summary> レーンの番号 </summary>
     public List<int> Block { get; private set; } = new List<int>();
@@ -48,7 +48,6 @@ public class LoadTest : MonoBehaviour
             {
                 sr.ReadToEnd();
                 MusicDTO.EditData music = JsonUtility.FromJson<MusicDTO.EditData>(sr.ToString());
-                Notes = music.notes;
             }
         }
         catch (FileNotFoundException)

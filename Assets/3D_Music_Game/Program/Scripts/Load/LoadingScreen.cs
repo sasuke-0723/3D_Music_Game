@@ -25,6 +25,7 @@ public class LoadingScreen : MonoBehaviour
     {
         // シーンの読み込みをする
         async = SceneManager.LoadSceneAsync("GameScene");
+
         // 読み込みが終わるまで進捗状況をスライダーの値に反映させる
         while (!async.isDone)
         {
@@ -32,8 +33,5 @@ public class LoadingScreen : MonoBehaviour
             slider.value = progressVal;
             yield return null;
         }
-        //async.allowSceneActivation = false;
-        //yield return new WaitForSeconds(3f);
-        //async.allowSceneActivation = true;
     }
 }

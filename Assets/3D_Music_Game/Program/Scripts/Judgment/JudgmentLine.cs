@@ -5,10 +5,13 @@ using UnityEngine;
 public class JudgmentLine : MonoBehaviour
 {
     AudioSource se;
+    ScoreManager scoreManager;
+    int score = 100;
 
     void Start()
     {
         se = GameObject.Find("SE").GetComponent<AudioSource>();
+        scoreManager = GameObject.Find("Score").GetComponent<ScoreManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -16,6 +19,7 @@ public class JudgmentLine : MonoBehaviour
         if (other.CompareTag("Note"))
         {
             se.Play();
+            scoreManager.UpdateScore(score);
         }
     }
 }

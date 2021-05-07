@@ -8,10 +8,12 @@ using System.Text;
 
 public class NotesCreater : ObjectPool
 {
-    /// <summary> TapNotes </summary>
-    [SerializeField] GameObject tapNotes;
-    /// <summary> LongNotes </summary>
-    [SerializeField] GameObject longNotes;
+    /// <summary> タップノーツ </summary>
+    [SerializeField] GameObject tapNote;
+    /// <summary> ホールドノーツ </summary>
+    [SerializeField] GameObject holdNote;
+    /// <summary> フリックノーツ </summary>
+    [SerializeField] GameObject flickNote;
     /// <summary> 最初にInstance化するObjectの数 </summary>
     [SerializeField] int initNotesCount;
     /// <summary> 追加でInstance化するObjectの数 </summary>
@@ -21,7 +23,6 @@ public class NotesCreater : ObjectPool
     [SerializeField] Transform judgmentLine;
 
     LoadTest load = new LoadTest();
-    Note note = new Note();
     MusicDTO.EditData music;
 
     void Awake()
@@ -49,10 +50,25 @@ public class NotesCreater : ObjectPool
         Vector3 judgLinePos = judgmentLine.position;
         for (int i = 0; i < music.notes.Count; i++)
         {
+            float distance = Note.NoteSpeed * beatPerSecond;
             Vector3 notePos = new Vector3(-3.8f + music.notes[i].block * 1.9f,
-                 music.notes[i].num * beatPerSecond * note.NoteSpeed / Mathf.Sqrt(3.0f),
-                 music.notes[i].num * beatPerSecond * note.NoteSpeed);
-            CreatePool(tapNotes, notePos, angle);
+                 music.notes[i].num * distance / Mathf.Sqrt(3.0f),
+                 music.notes[i].num * distance);
+
+            switch (music.notes[i].type)
+            {
+                case 1:
+                    CreatePool(tapNote, notePos, angle);
+                    break;
+                case 2:
+                    CreatePool(holdNote, notePos, angle);
+                    break;
+                case 3:
+                    CreatePool(flickNote, notePos, angle);
+                    break;
+                default:
+                    break;
+            }
         }
         clip.Music.Play();
     }

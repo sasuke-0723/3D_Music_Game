@@ -6,13 +6,14 @@ using UnityEngine;
 public class Note : MonoBehaviour
 {
     Rigidbody rigid;
-    [SerializeField] float noteSpeed = 4.0f;
-    public float NoteSpeed { get { return noteSpeed; } }
+    [SerializeField] static float noteSpeed = 4.0f;
+    public static float NoteSpeed { get { return noteSpeed; } }
 
     void OnEnable()
     {
         noteSpeed = 4f * 158f / 60f;
         rigid = GetComponent<Rigidbody>();
+        rigid.useGravity = false;
         rigid.velocity = Vector3.zero;
     }
 
