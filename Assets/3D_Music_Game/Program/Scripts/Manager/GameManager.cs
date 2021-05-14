@@ -8,10 +8,12 @@ using UniRx.Triggers;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    [SerializeField] Transform judgmentLine;
+    [SerializeField] float countDown = 3.0f;
+    bool isPlay = false;
+    public bool IsPlay { get { return isPlay; } }
 
-    protected override void Awake()
+    void Update()
     {
-        base.Awake();
+
     }
 }
