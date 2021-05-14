@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx.Toolkit;
 
 /// <summary>
-/// ObjectPool
+/// オブジェクトを生成して使い回すクラス
 /// </summary>
 public abstract class ObjectPool : MonoBehaviour
 {
@@ -18,14 +19,13 @@ public abstract class ObjectPool : MonoBehaviour
     /// <param name="obj"> Instance化するObject </param>
     /// <param name="pos"> Instance化する位置 </param>
     /// <param name="angle"> Instance化する角度 </param>
-    /// <param name="maxCount"> Instance化するObjectの数 </param>
     protected void CreatePool(GameObject obj, Vector3 pos, Quaternion angle)
     {
         poolObj = obj;
         poolObjList = new List<GameObject>();
 
         var newObj = CreateNewObject(pos, angle);
-        newObj.gameObject.SetActive(false);
+        //newObj.gameObject.SetActive(false);
         poolObjList.Add(newObj);
     }
 

@@ -6,6 +6,9 @@ using NoteEditor.DTO;
 using System.IO;
 using System.Text;
 
+/// <summary>
+/// ノートを生成するクラス
+/// </summary>
 public class NotesCreater : ObjectPool
 {
     /// <summary> タップノーツ </summary>
@@ -22,40 +25,26 @@ public class NotesCreater : ObjectPool
     Quaternion angle = Quaternion.Euler(-30f, 0, 0);
     [SerializeField] Transform judgmentLine;
 
-    LoadTest load = new LoadTest();
-    MusicDTO.EditData music;
+    LoadManager load = new LoadManager();
+    AudioManager clip = new AudioManager();
+
+    /// <summary> ノートが判定ラインに重なるタイミング </summary>
+    public List<float> NoteJudgTiming { get; private set; } = new List<float>();
 
     void Awake()
     {
-        try
-        {
-            FileInfo file = new FileInfo(load.FilePath);
-            using (StreamReader sr = new StreamReader(file.OpenRead()))
-            {
-                music = JsonUtility.FromJson<MusicDTO.EditData>(sr.ReadToEnd());
-            }
-        }
-        catch (FileNotFoundException e)
-        {
-            Debug.LogError("指定されたファイルが見つかりませんでした\n" + e);
-        }
+        load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
+        clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
 
-        AudioManager clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
-        // 小節の数
-        float numberOfMeasures = music.BPM / 4f;
-        // 一小節に掛かる時間(秒)
-        float barPerSecond = 60f / numberOfMeasures;
-        // 一拍に掛かる時間(秒) => ノーツの間隔
-        float beatPerSecond = barPerSecond / 4;
-        Vector3 judgLinePos = judgmentLine.position;
-        for (int i = 0; i < music.notes.Count; i++)
+        for (int i = 0; i < load.Notes.Count; i++)
         {
-            float distance = Note.NoteSpeed * beatPerSecond;
-            Vector3 notePos = new Vector3(-3.8f + music.notes[i].block * 1.9f,
-                 music.notes[i].num * distance / Mathf.Sqrt(3.0f),
-                 music.notes[i].num * distance);
+            float distance = Note.NoteSpeed * load.OneBeatTime;
+            Vector3 notePos = new Vector3(-3.8f + load.Notes[i].block * 1.9f,
+            load.Notes[i].num * distance / Mathf.Sqrt(3.0f),
+            load.Notes[i].num * distance);
+            NoteJudgTiming.Add(load.Notes[i].num * load.OneBeatTime);
 
-            switch (music.notes[i].type)
+            switch (load.Notes[i].type)
             {
                 case 1:
                     CreatePool(tapNote, notePos, angle);

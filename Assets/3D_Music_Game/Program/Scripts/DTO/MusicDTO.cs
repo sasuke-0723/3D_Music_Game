@@ -36,7 +36,7 @@ namespace NoteEditor.DTO
             public int block;
             /// <summary> Noteの種類 </summary>
             public int type;
-            /// <summary> NoteDataのメンバ変数を保持する </summary>
+            /// <summary> Noteのメンバ変数を保持する </summary>
             public List<Note> notes;
         }
     }
