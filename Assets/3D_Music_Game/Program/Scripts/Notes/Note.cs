@@ -1,51 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NoteEditor.DTO;
 
-/// <summary>
-/// ノートを降らせるクラス
-/// </summary>
-[RequireComponent(typeof(Rigidbody))]
-public class Note : MonoBehaviour
+namespace GameScreen
 {
-    Rigidbody rigid;
-    [SerializeField] static float noteSpeed = 4.0f;
-    public static float NoteSpeed { get { return noteSpeed; } }
-    float generationPosY;
-    float generationPosZ;
-
-    LoadManager load = new LoadManager();
-    AudioManager clip;
-
-    void Awake()
+    /// <summary>
+    /// ノート自身が持つクラス
+    /// </summary>
+    [RequireComponent(typeof(Rigidbody2D))]
+    public class Note : MonoBehaviour
     {
-        clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
-    }
+        public NoteType noteType = NoteType.Tap;
 
-    void OnEnable()
-    {
-        noteSpeed = 4f * 158f / 60f;
-        rigid = GetComponent<Rigidbody>();
-        rigid.useGravity = false;
-        rigid.velocity = Vector3.zero;
-        generationPosY = transform.position.y;
-        generationPosZ = transform.position.z;
-    }
+        LoadManager load = new LoadManager();
+        AudioManager clip;
+        NotesCreator note;
+        NotesManager noteManager;
 
-    //void Update()
-    //{
-    //    float posY = generationPosY - (transform.position.y - clip.Music.time) * noteSpeed;
-    //    float posZ = generationPosZ - (transform.position.z - clip.Music.time) * noteSpeed;
-    //    Vector3 pos = new Vector3(0, posY, posZ);
-    //    Vector3 angle = new Vector3(-30, 0, 0);
-    //    Vector3 direction = Quaternion.Euler(angle) * pos;
-    //    rigid.velocity = direction;
-    //}
+        float judgLinePosY;
+        float notePosY;
+        float notePosZ;
 
-    void FixedUpdate()
-    {
-        Vector3 angle = new Vector3(-30, 0, 0);
-        Vector3 direction = Quaternion.Euler(angle) * Vector3.back;
-        rigid.velocity = direction * noteSpeed;
+        float NoteJudgTiming;
+
+        void Awake()
+        {
+            clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
+            load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
+            note = GameObject.Find("CreateNotes").GetComponent<NotesCreator>();
+            noteManager = GameObject.Find("NotesManager").GetComponent<NotesManager>();
+            NoteJudgTiming = note.note.num * load.OneBeatTime;
+            judgLinePosY = note.JudgmentLine.position.y;
+        }
+
+        void Update()
+        {
+            notePosY = (judgLinePosY - (judgLinePosY * noteManager.NoteSpeed * (NoteJudgTiming - clip.Music.time))) / Mathf.Sqrt(3.0f);
+            notePosZ = judgLinePosY - (judgLinePosY * noteManager.NoteSpeed * (NoteJudgTiming - clip.Music.time));
+
+            transform.position = new Vector3(
+                transform.position.x,
+                notePosY,
+                notePosZ);
+        }
     }
 }

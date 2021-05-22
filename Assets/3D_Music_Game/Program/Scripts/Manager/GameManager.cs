@@ -6,14 +6,17 @@ using UnityEngine.UI;
 using UniRx;
 using UniRx.Triggers;
 
-public class GameManager : SingletonMonoBehaviour<GameManager>
+namespace GameScreen
 {
-    [SerializeField] float countDown = 3.0f;
-    bool isPlay = false;
-    public bool IsPlay { get { return isPlay; } }
-
-    void Update()
+    public class GameManager : SingletonMonoBehaviour<GameManager>
     {
+        [SerializeField] float countDown = 3.0f;
+        bool isPlay = false;
+        public bool IsPlay { get { return isPlay; } }
 
+        void Update()
+        {
+
+        }
     }
 }

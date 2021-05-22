@@ -2,31 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JudgmentLine : MonoBehaviour
+namespace GameScreen
 {
-    AudioSource se;
-    ScoreManager scoreManager;
-    int score = 100;
-    NotesCreater note;
-    int i = 0;
-    AudioManager clip;
-
-    void Start()
+    public class JudgmentLine : MonoBehaviour
     {
-        se = GameObject.Find("SE").GetComponent<AudioSource>();
-        scoreManager = GameObject.Find("Score").GetComponent<ScoreManager>();
-        note = GameObject.Find("CreateNotes").GetComponent<NotesCreater>();
-        clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
-    }
+        AudioSource se;
+        ScoreManager scoreManager;
+        int score = 100;
+        LoadManager load;
+        int i = 0;
+        AudioManager clip;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Note"))
+        void Start()
         {
-            se.Play();
-            scoreManager.UpdateScore(score);
-            Debug.Log(clip.Music.time);
-            Debug.Log(note.NoteJudgTiming[i++]);
+            se = GameObject.Find("SE").GetComponent<AudioSource>();
+            scoreManager = GameObject.Find("Score").GetComponent<ScoreManager>();
+            load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
+            clip = GameObject.Find("MusicSource").GetComponent<AudioManager>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Note"))
+            {
+                se.Play();
+                scoreManager.UpdateScore(score);
+                Debug.Log(clip.Music.time);
+                Debug.Log(load.NoteJudgTiming[i++]);
+            }
         }
     }
 }

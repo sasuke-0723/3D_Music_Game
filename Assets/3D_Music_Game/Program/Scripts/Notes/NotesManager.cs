@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NotesManager : MonoBehaviour
+namespace GameScreen
 {
-    [SerializeField] List<GameObject> tapNote;
-    List<GameObject> tapNotesCount;
-    float notesJudgeTime = 3.0f;
+    /// <summary>
+    /// ノートを管理するクラス
+    /// </summary>
+    public class NotesManager : MonoBehaviour
+    {
+        [SerializeField] float noteSpeed = 5f;
+        public float NoteSpeed => noteSpeed;
+    }
 }
