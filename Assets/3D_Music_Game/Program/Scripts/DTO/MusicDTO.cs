@@ -40,4 +40,11 @@ namespace NoteEditor.DTO
             public List<Note> notes;
         }
     }
+
+    public enum NoteType
+    {
+        Tap = 1,
+        Hold = 2,
+        Flick = 3
+    }
 }
