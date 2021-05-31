@@ -9,7 +9,8 @@ namespace GameScreen
     /// </summary>
     public class NotesManager : MonoBehaviour
     {
-        [SerializeField] float noteSpeed = 5f;
+        [SerializeField]
+        [Range(1, 10)] float noteSpeed = 5f;
         public float NoteSpeed => noteSpeed;
     }
 }

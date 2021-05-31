@@ -23,6 +23,7 @@ namespace GameScreen
         float notePosZ;
 
         float NoteJudgTiming;
+        public int LaneNum { get; private set; }
 
         void Awake()
         {
@@ -30,14 +31,15 @@ namespace GameScreen
             load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
             note = GameObject.Find("CreateNotes").GetComponent<NotesCreator>();
             noteManager = GameObject.Find("NotesManager").GetComponent<NotesManager>();
-            NoteJudgTiming = note.note.num * load.OneBeatTime;
+            NoteJudgTiming = note.noteData.num * load.OneBeatTime;
+            LaneNum = note.noteData.block;
             judgLinePosY = note.JudgmentLine.position.y;
         }
 
         void Update()
         {
-            notePosY = (judgLinePosY - (judgLinePosY * noteManager.NoteSpeed * (NoteJudgTiming - clip.Music.time))) / Mathf.Sqrt(3.0f);
             notePosZ = judgLinePosY - (judgLinePosY * noteManager.NoteSpeed * (NoteJudgTiming - clip.Music.time));
+            notePosY = notePosZ / Mathf.Sqrt(3.0f);
 
             transform.position = new Vector3(
                 transform.position.x,

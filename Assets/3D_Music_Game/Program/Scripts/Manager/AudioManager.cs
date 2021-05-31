@@ -12,6 +12,8 @@ namespace GameScreen
         /// <summary> 楽曲情報 </summary>
         [SerializeField] AudioSource music;
         public AudioSource Music => music;
+        [SerializeField] AudioSource se;
+        public AudioSource SE => se;
 
         public void PlayAudioClip()
         {

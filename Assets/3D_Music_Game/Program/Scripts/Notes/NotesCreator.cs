@@ -28,12 +28,13 @@ namespace GameScreen
         [SerializeField] Transform judgmentLine;
         public Transform JudgmentLine => judgmentLine;
         public float SpawnPoint { get; private set; }
+        [SerializeField] GameObject notesParent;
 
         LoadManager load = new LoadManager();
         AudioManager clip = new AudioManager();
         NotesManager noteManager;
 
-        public MusicDTO.Note note;
+        public MusicDTO.Note noteData { get; private set; }
 
         void Awake()
         {
@@ -58,12 +59,12 @@ namespace GameScreen
                 judgmentLine.position.y + load.Num[i] * distance / Mathf.Sqrt(3.0f),
                 judgmentLine.position.y + load.Num[i] * distance);
 
-                note = load.Notes[i];
+                noteData = load.Notes[i];
 
                 switch (load.Notes[i].type)
                 {
                     case 1:
-                        CreatePool(tapNote, notePos, angle);
+                        CreatePool(notesParent, tapNote, notePos, angle);
                         break;
                     //case 2:
                     //    CreatePool(tapNote, notePos, angle);

@@ -10,6 +10,8 @@ namespace GameScreen
     /// </summary>
     public abstract class ObjectPool : MonoBehaviour
     {
+        /// <summary> Poolしたオブジェクトを </summary>
+        GameObject parentObj;
         /// <summary> PoolするObject </summary>
         GameObject poolObj;
         /// <summary> PoolしたObjectを格納するList </summary>
@@ -21,12 +23,12 @@ namespace GameScreen
         /// <param name="obj"> Instance化するObject </param>
         /// <param name="pos"> Instance化する位置 </param>
         /// <param name="angle"> Instance化する角度 </param>
-        protected void CreatePool(GameObject obj, Vector3 pos, Quaternion angle)
+        protected void CreatePool(GameObject parentObj, GameObject obj, Vector3 pos, Quaternion angle)
         {
             poolObj = obj;
             poolObjList = new List<GameObject>();
 
-            var newObj = CreateNewObject(pos, angle);
+            var newObj = CreateNewObject(parentObj, pos, angle);
             //newObj.gameObject.SetActive(false);
             poolObjList.Add(newObj);
         }
@@ -50,7 +52,7 @@ namespace GameScreen
             }
 
             // 全て使用中だったら新しく作って返す
-            var newObj = CreateNewObject(pos, angle);
+            var newObj = CreateNewObject(parentObj, pos, angle);
             newObj.gameObject.SetActive(true);
             poolObjList.Add(newObj);
             return newObj;
@@ -62,10 +64,11 @@ namespace GameScreen
         /// <param name="pos"> 位置 </param>
         /// <param name="angle"> 角度 </param>
         /// <returns> Instance化したObject </returns>
-        GameObject CreateNewObject(Vector3 pos, Quaternion angle)
+        GameObject CreateNewObject(GameObject parent, Vector3 pos, Quaternion angle)
         {
             var newObj = Instantiate(poolObj, pos, angle);
             newObj.name = poolObj.name + (poolObjList.Count + 1);
+            newObj.transform.parent = parent.transform;
             return newObj;
         }
 
