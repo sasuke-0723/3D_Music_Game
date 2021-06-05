@@ -11,79 +11,113 @@ using NoteEditor.DTO;
 
 namespace GameScreen
 {
+    /// <summary>
+    /// ゲームの状態変数
+    /// </summary>
+    public enum GameState
+    {
+        Title,
+        Select,
+        Playing,
+        GameClear,
+        GameOver,
+        Result
+    }
+
+    /// <summary>
+    /// ゲームの進行を管理するクラス
+    /// </summary>
     public class GameManager : SingletonMonoBehaviour<GameManager>
     {
-        const float PERFECT_BORDER = 0.05f;
-        const float GREAT_BORDER = 0.1f;
-        const float GOOD_BORDER = 0.2f;
-        const float BAD_BORDER = 0.5f;
+        public const float PERFECT_BORDER = 0.05f;
+        public const float GREAT_BORDER = 0.1f;
+        public const float GOOD_BORDER = 0.2f;
+        public const float BAD_BORDER = 0.5f;
 
         [SerializeField] AudioManager audioManager;
+        [SerializeField] ScoreManager scoreManager;
         NotesCreator note;
         LoadManager load;
-        //List<Note> noteObj = new List<Note>();
-        //Note[] noteObj;
-        //GameObject[] noteObj;
         Note[] noteObj;
-        GameObject[] obj;
-
-        float previousTime = 0f;
 
         KeyCode[] keys = new KeyCode[] { KeyCode.A, KeyCode.D, KeyCode.G, KeyCode.J, KeyCode.L };
-        //Dictionary<KeyCode, int> keys = new Dictionary<KeyCode, int>()
-        //{
-        //    { KeyCode.A, 0 },
-        //    { KeyCode.D, 1 },
-        //    { KeyCode.G, 2 },
-        //    { KeyCode.J, 3 },
-        //    { KeyCode.L, 4 },
-        //};
 
         void Start()
         {
             note = GameObject.Find("CreateNotes").GetComponent<NotesCreator>();
             load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
-            obj = GameObject.FindGameObjectsWithTag("Note");
+            //noteObj = FindObjectsOfType<Note>();
         }
 
         void Update()
         {
-            for (int i = 0; i < keys.Length; i++)
+            for (int laneNum = 0; laneNum < keys.Length; laneNum++)
             {
-                if (Input.GetKeyDown(keys[i]))
+                if (Input.GetKeyDown(keys[laneNum]))
                 {
-                    for (int j = 0; j < obj.Length; j++)
-                    {
-                        if (noteObj[i].LaneNum == i)
-                        {
-                            noteObj[i] = GameObject.FindGameObjectWithTag("Note").GetComponent<Note>();
-                            Debug.Log(noteObj[i].LaneNum);
-                        }
-                    }
+                    GetTheClosestNote(laneNum);
                 }
             }
         }
 
-        void OnNotePerfect()
+        /// <summary>
+        /// 押したキーに対応したノートの中で最も近いものを取得
+        /// </summary>
+        /// <param name="laneNum"> レーン番号 </param>
+        /// <returns> 一番近いオブジェクト </returns>
+        void GetTheClosestNote(int laneNum)
         {
+            var targetNote = FindObjectsOfType<Note>()
+                .Where(note => note.NoteNumber == laneNum)
+                .OrderBy(note => note.AbsoluteTimeLag)
+                .FirstOrDefault(note => note.AbsoluteTimeLag <= BAD_BORDER);
+
+            var timeLag = targetNote.AbsoluteTimeLag;
+            switch (timeLag)
+            {
+                case float time when time <= PERFECT_BORDER:
+                    OnNotePerfect();
+                    break;
+                case float time when time <= GREAT_BORDER:
+                    OnNoteGreat();
+                    break;
+                case float time when time <= GOOD_BORDER:
+                    OnNoteGood();
+                    break;
+                case float time when time <= BAD_BORDER:
+                    OnNoteBad();
+                    break;
+                default:
+                    break;
+            }
+            targetNote.gameObject.SetActive(false);
+
+            //Debug.Log(targetNote.name);
+        }
+
+        public void OnNotePerfect()
+        {
+            scoreManager.UpdateScore(1000);
             Debug.Log("Perfect");
         }
-        void OnNoteGreat()
+        public void OnNoteGreat()
         {
+            scoreManager.UpdateScore(500);
             Debug.Log("Great");
         }
-        void OnNoteBad()
+        public void OnNoteGood()
         {
+            scoreManager.UpdateScore(250);
+            Debug.Log("Good");
+        }
+        public void OnNoteBad()
+        {
+            scoreManager.UpdateScore(100);
             Debug.Log("Bad");
         }
-        void OnNoteMiss()
+        public void OnNoteMiss()
         {
             Debug.Log("Miss");
-        }
-
-        void GetOnNoteKeyTypeAction(int laneNumber)
-        {
-
         }
     }
 }

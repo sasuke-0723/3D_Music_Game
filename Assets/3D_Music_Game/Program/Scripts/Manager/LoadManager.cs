@@ -35,8 +35,6 @@ namespace GameScreen
         public List<int> Block { get; private set; } = new List<int>();
         /// <summary> Notesの種類 </summary>
         public List<NoteType> Type { get; private set; } = new List<NoteType>();
-        /// <summary> ノートが判定ラインに重なるタイミング </summary>
-        public List<float> NoteJudgTiming { get; private set; } = new List<float>();
         /// <summary> 小節の数 </summary>
         public float NumberOfMeasures { get; private set; }
         /// <summary> 一小節に掛かる時間(秒) </summary>
@@ -95,7 +93,6 @@ namespace GameScreen
                 LPB.Add(data.LPB);
                 Num.Add(data.num);
                 Block.Add(data.block);
-                NoteJudgTiming.Add(data.num * OneBeatTime);
             }
             Notes = musicalData.notes;
         }
