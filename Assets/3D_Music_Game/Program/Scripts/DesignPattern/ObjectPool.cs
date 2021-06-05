@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx.Toolkit;
 
 namespace GameScreen
 {
@@ -15,7 +14,7 @@ namespace GameScreen
         /// <summary> PoolするObject </summary>
         GameObject poolObj;
         /// <summary> PoolしたObjectを格納するList </summary>
-        List<GameObject> poolObjList;
+        List<GameObject> poolObjList = new List<GameObject>();
 
         /// <summary>
         /// オブジェクトプールを作成
@@ -26,7 +25,6 @@ namespace GameScreen
         protected void CreatePool(GameObject parentObj, GameObject obj, Vector3 pos, Quaternion angle)
         {
             poolObj = obj;
-            poolObjList = new List<GameObject>();
 
             var newObj = CreateNewObject(parentObj, pos, angle);
             //newObj.gameObject.SetActive(false);

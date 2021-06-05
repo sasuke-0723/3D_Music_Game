@@ -30,8 +30,8 @@ namespace GameScreen
         public float SpawnPoint { get; private set; }
         [SerializeField] GameObject notesParent;
 
-        LoadManager load = new LoadManager();
-        AudioManager clip = new AudioManager();
+        LoadManager load;
+        AudioManager clip;
         NotesManager noteManager;
 
         public MusicDTO.Note noteData { get; private set; }

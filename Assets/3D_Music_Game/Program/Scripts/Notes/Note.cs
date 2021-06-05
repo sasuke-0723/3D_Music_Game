@@ -13,17 +13,32 @@ namespace GameScreen
     {
         public NoteType noteType = NoteType.Tap;
 
-        LoadManager load = new LoadManager();
+        Transform noteClearZone;
+
+        LoadManager load;
         AudioManager clip;
         NotesCreator note;
         NotesManager noteManager;
+        GameManager gameManager;
 
         float judgLinePosY;
         float notePosY;
         float notePosZ;
 
-        float NoteJudgTiming;
+        /// <summary> ノートが判定ラインに重なるタイミング </summary>
+        public float NoteJudgTiming { get; private set; }
+        /// <summary> ノートのレーン番号 </summary>
         public int LaneNum { get; private set; }
+
+        public int NoteNumber
+        {
+            get { return gameObject.activeSelf ? LaneNum : int.MinValue; }
+        }
+
+        public float AbsoluteTimeLag
+        {
+            get { return Mathf.Abs(NoteJudgTiming - clip.Music.time); }
+        }
 
         void Awake()
         {
@@ -31,6 +46,9 @@ namespace GameScreen
             load = GameObject.Find("LoadManager").GetComponent<LoadManager>();
             note = GameObject.Find("CreateNotes").GetComponent<NotesCreator>();
             noteManager = GameObject.Find("NotesManager").GetComponent<NotesManager>();
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            noteClearZone = GameObject.Find("NoteClearZone").GetComponent<Transform>();
+
             NoteJudgTiming = note.noteData.num * load.OneBeatTime;
             LaneNum = note.noteData.block;
             judgLinePosY = note.JudgmentLine.position.y;
@@ -38,6 +56,13 @@ namespace GameScreen
 
         void Update()
         {
+            var timeLag = NoteJudgTiming - clip.Music.time;
+            if (timeLag < -GameManager.BAD_BORDER)
+            {
+                gameManager.OnNoteMiss();
+                gameObject.SetActive(false);
+            }
+
             notePosZ = judgLinePosY - (judgLinePosY * noteManager.NoteSpeed * (NoteJudgTiming - clip.Music.time));
             notePosY = notePosZ / Mathf.Sqrt(3.0f);
 
